@@ -1,0 +1,2 @@
+com/mayonlabs/fuzion/android/test/BuildConfig.java
+ com.mayonlabs.fuzion.android.test.BuildConfig

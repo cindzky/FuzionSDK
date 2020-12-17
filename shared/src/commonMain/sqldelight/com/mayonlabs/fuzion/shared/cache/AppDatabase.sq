@@ -1,0 +1,177 @@
+import com.mayonlabs.fuzion.shared.entity.AddOn;
+import com.mayonlabs.fuzion.shared.entity.CartItem;
+import com.mayonlabs.fuzion.shared.entity.Kiosk;
+import com.mayonlabs.fuzion.shared.entity.MixtureSetting;
+import com.mayonlabs.fuzion.shared.entity.Status;
+import java.lang.Integer;
+import java.lang.String;
+import kotlin.collections.List;
+import kotlinx.serialization.json.JsonObject;
+
+CREATE TABLE MenuItem (
+    id INTEGER NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    slug TEXT,
+    description TEXT,
+    price REAL,
+    salePrice REAL,
+    images TEXT AS List<String>,
+    variations TEXT AS List<String>,
+    addon_options TEXT as List<AddOn>,
+    mixture_settings TEXT as List<MixtureSetting>
+);
+
+CREATE TABLE FavoritesItem (
+    id INTEGER NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    slug TEXT,
+    description TEXT,
+    price REAL,
+    salePrice REAL,
+    images TEXT AS List<String>,
+    variations TEXT AS List<String>,
+    addon_options TEXT as List<AddOn>,
+    mixture_settings TEXT as List<MixtureSetting>
+);
+
+CREATE TABLE CartItem(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    item_id INTEGER NOT NULL,
+    item_ref TEXT NOT NULL,
+    name TEXT,
+    image TEXT,
+    item TEXT,
+    variation TEXT,
+    addons TEXT as List<String>,
+    mixture TEXT as List<String>,
+    price REAL,
+    quantity INTEGER,
+    status Text
+);
+
+CREATE TABLE Kiosk(
+    ref_id TEXT,
+    coordinates TEXT,
+    description TEXT,
+    menu TEXT as JsonObject,
+    location TEXT
+);
+
+CREATE TABLE AddOns(
+    id INTEGER NOT NULL PRIMARY KEY,
+    name TEXT,
+    addon TEXT,
+    price REAL,
+    sale_price REAL
+);
+
+CREATE TABLE OrderItem(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    email_address TEXT,
+    status TEXT as Status,
+    line_items TEXT as List<CartItem>,
+    total_price REAL,
+    total_quantity INTEGER,
+    kiosk TEXT as Kiosk,
+    datetime_created TEXT,
+    datetime_cancelled TEXT,
+    datetime_paid TEXT,
+    datetime_completed TEXT,
+    pin TEXT
+);
+
+insertMenuItem:
+INSERT INTO MenuItem(id, name, slug, description, price, salePrice, images, variations, addon_options, mixture_settings)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+insertFavoritesItem:
+INSERT INTO FavoritesItem(id, name, slug, description, price, salePrice, images, variations, addon_options, mixture_settings)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+insertCartItem:
+INSERT INTO CartItem(item_id, item_ref, name, image, item, variation, addons, mixture, price, quantity, status)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+insertKiosk:
+INSERT INTO Kiosk(ref_id, coordinates, description, menu, location)
+VALUES(?, ?, ?, ?, ?);
+
+insertAddons:
+INSERT INTO AddOns(id, name, addon, price, sale_price)
+VALUES(?, ?, ?, ?, ?);
+
+insertOrder:
+INSERT INTO OrderItem(id, email_address, status, line_items, total_price, total_quantity, kiosk, datetime_created, datetime_cancelled, datetime_paid, datetime_completed, pin)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+removeAllMenuItems:
+DELETE FROM MenuItem;
+
+removeAllFavorites:
+DELETE FROM FavoritesItem;
+
+removeFavoriteById:
+DELETE FROM FavoritesItem WHERE id = ?;
+
+removeAllCartItems:
+DELETE FROM CartItem;
+
+removeAllCartItemById:
+DELETE FROM CartItem WHERE id = ?;
+
+removeOrderItemByID:
+DELETE FROM OrderItem WHERE id = ?;
+
+removeAllKiosks:
+DELETE FROM Kiosk;
+
+removeAllAddOns:
+DELETE FROM AddOns;
+
+selectAllMenuItems:
+SELECT * FROM MenuItem;
+
+selectCartItemById:
+SELECT * FROM CartItem WHERE id = ?;
+
+selectAllFavoritesItems:
+SELECT * FROM FavoritesItem;
+
+selectFavoritesById:
+SELECT * FROM FavoritesItem WHERE id = ?;
+
+selectAllCartItems:
+SELECT * FROM CartItem ORDER BY id DESC;
+
+selectAllKiosks:
+SELECT * FROM Kiosk;
+
+selectAllAddOns:
+SELECT * FROM AddOns;
+
+selectAllOrdersByStatus:
+SELECT * FROM OrderItem WHERE status = ? ORDER BY id DESC;
+
+selectAllCartItemsByStatus:
+SELECT * FROM CartItem WHERE status = ? ORDER BY id DESC;
+
+updateOrderStatus:
+UPDATE OrderItem SET status = ? WHERE id = ?;
+
+setOrderDateCancelled:
+UPDATE OrderItem SET datetime_cancelled = ? WHERE id = ?;
+
+setOrderDatePaid:
+UPDATE OrderItem SET datetime_paid = ? WHERE id = ?;
+
+setOrderDateCompleted:
+UPDATE OrderItem SET datetime_completed = ? WHERE id = ?;
+
+updateCartItemStatus:
+UPDATE CartItem SET status = ? WHERE id = ?;
+
+selectOrderItemById:
+SELECT * FROM OrderItem WHERE id = ?;
+
+lastInsertRowId:
+SELECT last_insert_rowid();
