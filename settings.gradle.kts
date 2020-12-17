@@ -13,8 +13,8 @@ pluginManagement {
         }
     }
 }
-rootProject.name = "Fuzion"
-include(":shared")
+rootProject.name = "FuzionSDK"
+include(":fuzionSDK")
 
-enableFeaturePreview("GRADLE_METADATA")
+//enableFeaturePreview("GRADLE_METADATA")
 

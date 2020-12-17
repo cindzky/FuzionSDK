@@ -20,14 +20,14 @@ buildscript {
         classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
         classpath("org.jetbrains.dokka:dokka-gradle-plugin:0.10.0")
         classpath("com.soywiz.korlibs.korge.plugins:korge-gradle-plugin:1.10.0.0")
+        classpath("org.jfrog.buildinfo:build-info-extractor-gradle:4.13.0")
     }
 }
 
 group = "com.mayonlabs.fuzion"
-version = "1.0-SNAPSHOT"
+version = "0.3-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    jcenter()
 }
-
-//apply(plugin = "korge")
